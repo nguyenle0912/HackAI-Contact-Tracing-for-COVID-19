@@ -1,8 +1,10 @@
 1) Get list of potentially infected students
     ?- potential_infected_students(Infected, List_of_Potential_Infected).
+    ?- get_all_potential_infected_students(Result).
 
 2) Get list of potentially infected students that are at risk and should be prioritized
     ?- critical_potential_infected_students(Infected, List_of_Potential_Infected).
+    ?- get_all_critical_students(Result).
 
 3) Get list of people that might be infected
     ?- went_to_infected_events(Result, Event).
