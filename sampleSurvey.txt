@@ -3,17 +3,14 @@ What we already have:
 
 Pre-survey:
     Q1: will you be attending any on-campus class this semester? 
-
-    %corresponding to roomate
     Q2: will you be living on-campus this semester?
-        Q2a: Who are your roomates if any? 
+        Q2a: Who are your roommates if any? 
+    Q3: Do you have any conditions that will put you at risk such as: high cholesterol, heart conditions, diabetes, cancer? 
+    
     
 Daily-survey:
-    Q1: Were you on-campus today?
-
-    %corresponding to time_greater_than_fifteen
+    Q1: Were you on-campus today?]
     Q2: Were you in any on-campus building other than your class? 
     Q3: Please select the building you were in. 
     Q4: Please provide the time frame for each you're in these building. 
-    
     Q5: What is your body temperature? 
