@@ -16,7 +16,7 @@ SCENARIO 1: assuming that every student fills out the Daily Health Check survey.
             then go to step 2
             else get Roommate or Dormmate X of InfectedStudent Y 
 
-    2) Get list of students who are related to InfectedStudent Y.
+    2) Get in-person events that infected students went in the past 2 weeks
 
 
 

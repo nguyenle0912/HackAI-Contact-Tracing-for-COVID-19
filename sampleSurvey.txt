@@ -15,3 +15,5 @@ Daily-survey:
     Q2: Were you in any on-campus building other than your class? 
     Q3: Please select the building you were in. 
     Q4: Please provide the time frame for each you're in these building. 
+    
+    Q5: What is your body temperature? 
