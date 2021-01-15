@@ -6,6 +6,45 @@ Contact tracing is a process used by public health ministries to help stop the s
 ## What it does
 Our application takes in input about UTD students such as their roommates, classes, existing medical conditions, body temperature, and public events they've been to and allows for users to make various queries to find students at UTD that may have been infected by another UTD student that tested positive for COVID-19 in the last 14 days. 
 
+## Sample Queries
+1) Get list of potentially infected students
+```
+?- get_all_potential_infected_students(Result).
+```
+2) Get list of potentially infected students that are at risk and should be prioritized
+```
+?- get_all_critical_students(Result).
+```
+3) Get list of people that went to infected events who are not already infected
+```
+?- went_to_infected_events(Result, Event).
+```
+4) Get list of events that that the infected students went to in the past 2 weeks
+```
+?- list_of_infected_events(Result).
+```
+5) Find all roommates of infected students
+```
+?- find_all_roommates(Infected, Result).
+```
+6) Get list of potentially infected locations
+```
+?- potential_infected_locations(Infected, Location).
+```
+7) Get list of infected student's classmates
+```
+?- find_all_classmates(Infected, Result).
+```
+8) Get list of students swith high temperatures
+```
+?- get_students_with_high_temperatures(Result).
+```
+9) Get list of students who are at risk
+```
+?- get_students_at_high_risk(Result).
+```
+
+---
 ## How we built it
 We used s(CASP) and Prolog for defining rules used to determine potentially infected students and if they are critical. 
 
@@ -20,4 +59,5 @@ We learned how to make more complex functions in Prolog and how s(CASP) works. W
 
 ## What's next for Contact Tracer
 Instead of using hard coded inputs, we can use actual data collected through a survey sent to students. We can also develop a user-interface for our application so it can be easier and less confusing for users to make queries. 
+
 
