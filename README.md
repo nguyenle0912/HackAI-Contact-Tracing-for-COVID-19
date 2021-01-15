@@ -15,4 +15,4 @@ We used s(CASP) and Prolog for defining rules used to determine potentially infe
 
 ## What we learned
 
-## What's next for Untitled
+## What's next for Contact Tracer
