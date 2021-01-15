@@ -1,3 +1,4 @@
+% #include 'knowledgeBase.pl'.
 
 %UNIX TIMESTAMP CONVERTER: https://www.unixtimestamp.com/index.php
 
@@ -7,6 +8,8 @@ max_contact_time(900). %900 secs = 15mins
 %START ------ SAMPLE KNOWLEDGE BASE ---------------------------------------------------------
 %List of infected students and time of covid contraction
 infected(matt, 1610657119). %01/14/2021 @ 8:45pm (UTC) check locations between 01/01/2021 - 01/14/2021
+infected(jack, 1610280000). %01/10/2021 @ 12:00pm (UTC)
+% ?- infected(X, _).
 
 %List of in-person events that the infected student went to in the last 2 weeks
 %infected_event(Name_Of_Event, StartT, EndT) %StartT and EndT denotes that start and end time of an event
@@ -76,9 +79,36 @@ member(X,[X|_]).
 member(X,[Y|T]) :- member(X,T).
 
 %duplicate removal
-set([],[]).
-set([H|T],[H|Out]) :- not member(H,T), set(T,Out).
-set([H|T],Out) :- member(H,T), set(T,Out).
+% An empty list is a set.
+set([], []).
+
+% Put the head in the result,
+% remove all occurrences of the head from the tail,
+% make a set out of that.
+set([H|T], [H|T1]) :- 
+    remv(H, T, T2),
+    set(T2, T1).
+
+% Removing anything from an empty list yields an empty list.
+remv(_, [], []).
+
+% If the head is the element we want to remove,
+% do not keep the head and
+% remove the element from the tail to get the new list.
+remv(X, [X|T], T1) :- remv(X, T, T1).
+
+% If the head is NOT the element we want to remove,
+% keep the head and
+% remove the element from the tail to get the new tail.
+remv(X, [H|T], [H|T1]) :-
+    X \= H,
+    remv(X, T, T1).
+
+%append
+% append(E, L, ResultL):- ResultL is [E|L].
+append([], L, L).
+append([H|T], L2, [H|L3]) :- append(T,L2,L3).
+append(H, L, [H|L]).
 
 %END------FUNCTION HELPER ---------------------------------
 
@@ -87,12 +117,92 @@ set([H|T],Out) :- member(H,T), set(T,Out).
     % 1) student X must be in close contact with Infected
     % 2) student X may not have high temp
     % 3) student X may not have any existing medical conditions
-potential_infected_student(Infected, Potential) :- infected(Infected, _), get_close_contact(Infected, Potential), not high_temperature(Potential), not at_risk(Potential).
+
+/*potential_infected_student(Infected, LowRisk) :- 
+    get_close_contact(Infected, Potentials), %[jack, anusha, nguyen]
+    check_health_status(_, LowRisk, Potentials).
+
+critical_potential_infected_student(Infected, Potential) :- 
+    get_close_contact(Infected, Potential), 
+    check_health_status(HighRisk, _,  Potentials).*/
+
+%conditions for potential_infected_locations to hold:
+    % 1) student X must be in close contact with Infected
+    % 2) student X has high temp
+    % 3) student X does not have existing medical conditions
+potential_infected_student(Infected, Potential) :-
+        close_contact(Infected, Potential),
+        not check_health_status(Potential).
+potential_infected_students(Infected, Result) :- infected(Infected, _), findall(X, potential_infected_student(Infected, X), Xs), set(Xs, Result).
+
 %conditions for critical_potential_infected_student to hold:
     % 1) student X must be in close contact with Infected
     % 2) student X has high temp
     % 3) student X does not have existing medical conditions
-critical_potential_infected_student(Infected, Potential) :- infected(Infected, _), get_close_contact(Infected, Potential), high_temperature(Potential), at_risk(Potential).
+critical_potential_infected_students(Infected, Result) :- findall(X, critical_potential_infected_student(Infected, X), Xs), set(Xs, Result).
+critical_potential_infected_student(Infected, Potential) :-
+        close_contact(Infected, Potential),
+        check_health_status(Potential).
+
+
+check_health_status(Potential):-
+        high_temperature(Potential),
+        at_risk(Potential).
+
+/*
+predicates
+    split(list,list,list)
+clauses
+    split([],[],[]).
+    split([X|L],[X|L1],L2):-
+        X>= 0,
+        !,    
+        split(L,L1,L2).
+
+    split([X|L],L1,[X|L2]):-
+        split(L,L1,L2).
+*/
+
+/*
+potential :- not (p & q) :- not p or not q
+critial :- p & q :- not(not p or not q)
+*/
+/*
+check_health_status([], [], []).
+check_health_status(HighRisk, LowRisk, [H|Potentials]) :-
+    high_temperature(H), 
+    at_risk(H),
+    check_health_status(Potentials).
+
+p :- high_temperature. 
+q :- at_risk.
+
+
+
+potential_infected_student_1(Infected, Potential) :- 
+    close_contact(Infected, Potential), 
+    not high_temperature(Potential), 
+    not at_risk(Potential).
+*/
+/*
+%conditions for critical_potential_infected_student to hold:
+    % 1) student X must be in close contact with Infected
+    % 2) student X has high temp
+    % 3) student X does not have existing medical conditions
+critical_potential_infected_student(Infected, Potential) :- 
+    get_close_contact(Infected, Potential), 
+    high_temperature(Potential), 
+    at_risk(Potential).
+
+critical_potential_infected_student_1(Infected, Potential) :- 
+    close_contact(Infected, Potential), 
+    high_temperature(Potential), 
+    at_risk(Potential).
+critical_potential_infected_student_1(Infected, Potential) :- 
+    close_contact(Infected, Potential), 
+    high_temperature(Potential).
+*/ 
+
 %conditions for potential_infected_locations to hold:
     % 1) student X must be in close contact with Infected
     % 2) student X has high temp
@@ -103,34 +213,9 @@ potential_infected_locations(Infected, Potential, Location) :-
     person_in_buildings(Infected, Location, _, _),
     person_in_buildings(Potential, Location, _, _),
     Infected \= Potential.
-/*
-%setof(Y, jack^roommates1(jack, Y), Result)
-% check for students that have been in close contact with the Infected student
-close_contact(Infected, Potential) :- close_conact_helper(Infected, Potential, [Infected]). 
-close_contact_helper(Infected, Potential, Seen) :-
-    close_contact1(Infected, Potential),
-    not member(Potential, Seen),
-    close_contact_helper(Infected, Potential, [Potential|Seen]). 
-*/
-% close contact conditions
-close_contact(Infected, PersonX):- time_greater_than_fifteen(Infected, PersonX). 
-close_contact(Infected, PersonX):- in_same_class(Infected, PersonX). 
-close_contact(Infected, PersonX):- not commuter(Infected),  not commuter(PersonX), roommates(Infected, PersonX).
-close_contact(Infected, PersonX):- went_to_event(Infected, PersonX, Event).
 
-get_close_contacts(PersonX, Result) :- findall(X, close_contact(PersonX, X), Xs), set(Xs, Result).
-
-
-% check student's temperature
-high_temperature(Student) :- 
-    student_temp(Student, Temp),
-    Temp >= 100. %in fahrenheit
-
-% check if student is at risk due to existing medical conditions
-at_risk(Student) :- high_cholesterol(Ls), member(Student, Ls).
-at_risk(Student) :- heart_conditions(Ls), member(Student, Ls).
-at_risk(Student) :- cancer(Ls), member(Student, Ls).
-at_risk(Student) :- diabetes(Ls), member(Student, Ls).
+% SAMPLE QUERY: ?- setof(Y, jack^roommates1(jack, Y), Result)
+% SAMPLE QUERY: ?- findall(X, roommates(matt, X), Xs).
 
 %get roommates of infected students 
 roommates2(X, Y) :- roommates1(X, Y).
@@ -143,7 +228,27 @@ roommatesHelper(X, Y, Seen) :-
     roommates2(X, Z),
     not member(Z, Seen),
     roommatesHelper(Z, Y, [Z | Seen]).
-% SAMPLE QUERY: ?- findall(X, roommates(matt, X), Xs).
+
+
+% close contact conditions
+close_contact(Infected, PersonX):- infected(Infected, _), time_greater_than_fifteen(Infected, PersonX). 
+close_contact(Infected, PersonX):- infected(Infected, _), in_same_class(Infected, PersonX). 
+close_contact(Infected, PersonX):- infected(Infected, _), not commuter(Infected),  not commuter(PersonX), roommates(Infected, PersonX).
+close_contact(Infected, PersonX):- infected(Infected, _), went_to_event(Infected, PersonX, Event).
+
+get_close_contact(Infected, Result) :- findall(X, close_contact(Infected, X), Xs), set(Xs, Result).
+% ?- get_close_contacts(X,Y).
+
+% check students temperature
+high_temperature(Student) :- 
+    student_temp(Student, Temp),
+    Temp >= 100. %in fahrenheit
+
+% check if student is at risk due to existing medical conditions
+at_risk(Student) :- high_cholesterol(Ls), member(Student, Ls).
+at_risk(Student) :- heart_conditions(Ls), member(Student, Ls).
+at_risk(Student) :- cancer(Ls), member(Student, Ls).
+at_risk(Student) :- diabetes(Ls), member(Student, Ls).
 
 %check if person X and Y are in the same class
 in_same_class(X, Y):- person_in_class(X, Z), person_in_class(Y, Z), X \= Y.
@@ -179,7 +284,7 @@ went_to_infected_event(PersonX, Event) :- attended_event(PersonX, Event), infect
 
 
 /*
-sample queries:
+sample queries:@e
 1) List infected student's classmates
     ?- in_same_class(name_of_infected, Student).
 
