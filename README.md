@@ -10,8 +10,10 @@ Our application takes in input about UTD students such as their roommates, class
 We used s(CASP) and Prolog for defining rules used to determine potentially infected students and if they are critical. 
 
 ## Challenges we ran into
+There was a bit of learning curve since all of us had only had minimal exposure to Prolog and s(CASP). There were a couple of times when our program would go into an infinite loop. We had to be creative and come up with more complex functions to prevent that from happening. 
 
 ## Accomplishments that we're proud of
+We're proud to have developed our skills in Prolog and logic programing. We're also proud we created an application that is very relevant to current real world situations. 
 
 ## What we learned
 We learned how to make more complex functions in Prolog and how s(CASP) works. We also learned a lot about the techniques for contact tracing used by authorities as we tried to mirror their logic in our application. 
