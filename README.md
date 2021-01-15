@@ -13,6 +13,9 @@ We used s(CASP) and Prolog for defining rules used to determine potentially infe
 
 ## Accomplishments that we're proud of
 
+
 ## What we learned
+We learned how to make more complex functions in Prolog and how s(CASP) works. We also learned a lot about the techniques for contact tracing used by authorities as we tried to mirror their logic in our application. 
 
 ## What's next for Contact Tracer
+We can use actual data as our inputs instead of hardcoded facts. We can also develop a user-interface for our application so it can be easier and less confusing for users to make queries. 
