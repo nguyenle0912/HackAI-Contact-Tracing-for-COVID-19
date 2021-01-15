@@ -1,0 +1,43 @@
+Goal: automatically generate a list of potential students that were in close enough contact with the infected student
+
+INPUTS:
+    - Attendance list (inputted by professors)
+    
+
+SCENARIO 1: assuming that every student fills out the Daily Health Check survey.
+    1) Check the dates on which the infected student was on campus.
+        2) Check the classes that the student have on those dates  
+            2.a) Check the classmates that went to those classes on those dates
+                i) if Student X and InfectedStudent Y went to the same class at the same time 
+                    if X_timestamp and Y_timestamp >= 15mins
+                        then Student X is a potential covid patient. 
+        3) Check the building that the student were in those dates
+        4) If InfectedStudent Y is a commuter, 
+            then go to step 2
+            else get Roommate or Dormmate X of InfectedStudent Y 
+
+    2) Get list of students who are related to InfectedStudent Y.
+
+
+
+
+
+
+/*
+CaseA
+ |*****|
+   |*******|
+ CaseB
+   |*****|
+ |****|
+ CaseC
+|*******|
+   |**|
+CaseD
+   |**|
+|*******|
+CaseE
+|***|
+      |****|
+*/
+            

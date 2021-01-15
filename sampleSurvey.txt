@@ -1,0 +1,17 @@
+What we already have:
+    The class student is attending
+
+Pre-survey:
+    Q1: will you be attending any on-campus class this semester? 
+
+    %corresponding to roomate
+    Q2: will you be living on-campus this semester?
+        Q2a: Who are your roomates if any? 
+    
+Daily-survey:
+    Q1: Were you on-campus today?
+
+    %corresponding to time_greater_than_fifteen
+    Q2: Were you in any on-campus building other than your class? 
+    Q3: Please select the building you were in. 
+    Q4: Please provide the time frame for each you're in these building. 
