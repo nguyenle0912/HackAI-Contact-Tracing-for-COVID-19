@@ -1,4 +1,8 @@
 # HackAI-Contact-Tracing-for-COVID-19
+Nguyen Le \
+Matthew Paul \
+Jack Liang \
+Anusha Saha 
 
 ## Inspiration
 Contact tracing is a process used by public health ministries to help stop the spread of infectious disease, such as COVID-19, within a community. Once a person is positive for coronavirus, it is very important to identify other people who may have been infected by the patients diagnosed. To identify infected people, the authorities follow the activity of patients diagnosed in the last 14 days. 
@@ -59,5 +63,3 @@ We learned how to make more complex functions in Prolog and how s(CASP) works. W
 
 ## What's next for Contact Tracer
 Instead of using hard coded inputs, we can use actual data collected through a survey sent to students. We can also develop a user-interface for our application so it can be easier and less confusing for users to make queries. 
-
-
